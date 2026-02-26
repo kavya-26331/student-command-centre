@@ -1,4 +1,7 @@
 import streamlit as st
+from dotenv import load_dotenv
+load_dotenv()
+
 from components.ai_utils import ask_ai
 from components.pdf_utils import extract_pdf_text, clean_notes, export_clean_pdf
 from components.finance_utils import add_expense, load_expenses, get_expense_summary, export_excel

@@ -1,10 +1,23 @@
-import ollama
+import os
+from groq import Groq
 
 def ask_ai(prompt):
     try:
-        response = ollama.chat(model="llama3.1", messages=[
-            {"role": "user", "content": prompt}
-        ])
-        return response["message"]["content"]
+        api_key = os.getenv("GROQ_API_KEY")
+        
+        if not api_key:
+            return "GROQ_API_KEY not found in environment variables."
+
+        client = Groq(api_key=api_key)
+
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        return response.choices[0].message.content
+
     except Exception as e:
-        return f"Error calling Ollama: {str(e)}"
+        return f"Error calling Groq API: {str(e)}"
